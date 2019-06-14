@@ -17,14 +17,16 @@ const dialogflow = require('dialogflow')
 /** Random Color Picker Module */
 const randomHexColor = require('random-hex-color')
 
+/** sangoon_is_math Module */
+const SIM = require("sangoon_is_math") 
+
 /** Seoa Settings */
 const settings = {
   token: process.env.token || '',
-  prefix: process.env.prefix || '=',
+  prefix: process.env.prefix || '~',
   commands: process.env.commands || './commands/',
   dialogflow: process.env.dialogflow || 'seoa-woksnl',
-  activity: process.env.activity || 'Awesome Musics | =help',
-  notGuildMsg: process.env.notGuildMsg || 'You cannot use SeoaBot in DM'
+  activity: process.env.activity || 'Awesome Musics | ~help'
 }
 
 /** Seoa Discord Client */
@@ -68,7 +70,7 @@ seoa.on('message', (msg) => {
 
   if (msg.author.id === seoa.user.id) return
   if (msg.author.bot) return 
-  if (!msg.guild) return msg.channel.send(settings.notGuildMsg)
+  if (!msg.guild) return msg.channel.send(seoa.user.username + '는 DM에서 사용하실 수 없어요!')
 
   if (!msg.content.startsWith(settings.prefix)) return
   console.info(msg.author.username + '> ' + msg.content)
@@ -89,16 +91,16 @@ seoa.on('message', (msg) => {
       .setThumbnail(seoa.user.avatarURL)
       .setColor(randomHexColor())
       .addBlankField()
-      .addField(seoa.user.username + '의 이름, 테그', seoa.user.tag, true)
+      .addField(seoa.user.username + '의 이름, 태그', seoa.user.tag, true)
       .addField(seoa.user.username + '의 ID', seoa.user.id, true)
       .addField('총 명령어 수', commands.size, true)
       .addField('총 사용자 수', seoa.users.size, true)
-      .addField('총 체널 수', seoa.channels.size, true)
+      .addField('총 채널 수', seoa.channels.size, true)
       .addField('총 서버 수', seoa.guilds.size, true)
       .addField(seoa.user.username + '의 생일', seoa.user.createdAt, true)
       .addField(seoa.user.username + '의 업데이트 날짜', seoa.readyAt, true)
       .addField(seoa.user.username + '의 업타임', days + '일 ' + hours + '시간 ' + minutes + '분 ' + seconds + '초', true)
-      .addField('API 핑', seoa.pings, true)
+      .addField('API 핑', SIM.round(seoa.ping), true)
     msg.channel.send(botInfoEmbed)
   } else {
     let request = {
@@ -113,7 +115,7 @@ seoa.on('message', (msg) => {
 
     seoaDialogflow.detectIntent(request).then((res) => {
       if (res[0].queryResult.fulfillmentText.split(';')[0] === 'run') {
-        if (commands.get(res[0].queryResult.fulfillmentText.split(';')[1])) commands.get(res[0].queryResult.fulfillmentText.split(';')[1]).run(seoa, msg)
+        if (commands.get(res[0].queryResult.fulfillmentText.split(';')[1])) commands.get(res[0].queryResult.fulfillmentText.split(';')[1]).run(seoa, msg, settings)
       } else if (res[0].queryResult.fulfillmentText.split(';')[0] === 'say') {
         msg.channel.send(res[0].queryResult.fulfillmentText.split(';')[1])
       }
