@@ -12,30 +12,30 @@
 const discord = require('discord.js')
 
 /** Dialogflow Module */
-const dialogflow = require('dialogflow')
+// const dialogflow = require('dialogflow')
 
 /** Random Color Picker Module */
 const randomHexColor = require('random-hex-color')
 
 /** sangoon_is_math Module */
-const SIM = require("sangoon_is_math") 
+const SIM = require('sangoon_is_math')
 
 /** Seoa Settings */
 const settings = {
   token: process.env.token || '',
-  prefix: process.env.prefix || '~',
+  prefix: process.env.prefix || '>',
   commands: process.env.commands || './commands/',
   dialogflow: process.env.dialogflow || 'seoa-woksnl',
-  activity: process.env.activity || 'Awesome Musics | ~help'
+  activity: process.env.activity || 'Awesome Musics | >help',
+  owners: ['527746745073926145', '309230935377707011']
 }
-
+module.exports.settings = settings
+process.env.GOOGLE_APPLICATION_CREDENTIALS = './lib/Seoa-d5dd2ce1a3b1.json'
 /** Seoa Discord Client */
 const seoa = new discord.Client()
 
-/** Seoa Dialogflow Client */
-const seoaDialogflow = new dialogflow.SessionsClient()
-  /** Seoa Commands Collection */
-let commands = new discord.Collection()
+/** Seoa Commands Collection */
+const commands = new discord.Collection()
 
 // Command Reading Start
 
@@ -45,15 +45,15 @@ const fileReader = require('fs')
 fileReader.readdir(settings.commands, (err, files) => {
   if (err) console.err(err)
 
-  let commandFiles = files.filter((v) => v.split('.').pop() === 'js')
+  const commandFiles = files.filter((v) => v.split('.').pop() === 'js')
   if (commandFiles.length <= 0) console.error('Couldn\'t find commands.')
 
   commandFiles.forEach((v, i) => {
-  let command = require(settings.commands + v)
-  command.callSign.forEach((sign) => {
-  commands.set(sign, command)
-  })
-  console.log('Command Readed: ' + settings.commands + v)
+    const command = require(settings.commands + v)
+    command.callSign.forEach((sign) => {
+      commands.set(sign, command)
+    })
+    console.log('Command Readed: ' + settings.commands + v)
   })
 })
 
@@ -67,25 +67,24 @@ seoa.on('ready', () => {
 })
 
 seoa.on('message', (msg) => {
-
   if (msg.author.id === seoa.user.id) return
-  if (msg.author.bot) return 
+  if (msg.author.bot) return
   if (!msg.guild) return msg.channel.send(seoa.user.username + '는 DM에서 사용하실 수 없어요!')
 
   if (!msg.content.startsWith(settings.prefix)) return
-  console.info(msg.author.username + '> ' + msg.content)
-  if (!msg.content.split(settings.prefix)[1]) {
+  console.info(msg.guild.name + '> ' + msg.author.username + '> ' + msg.content)
 
+  if (msg.content === settings.prefix) {
     // UpTime Caculator Start
     let totalSeconds = (seoa.uptime / 1000)
-    let days = Math.floor(totalSeconds / 86400)
-    let hours = Math.floor(totalSeconds / 3600)
-    totalSeconds %= 3600;
-    let minutes = Math.floor(totalSeconds / 60)
-    let seconds = Math.floor(totalSeconds % 60)
+    const days = Math.floor(totalSeconds / 86400)
+    const hours = Math.floor(totalSeconds / 3600)
+    totalSeconds %= 3600
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = Math.floor(totalSeconds % 60)
     // UpTime Caculator End
 
-    let botInfoEmbed = new discord.RichEmbed()
+    const botInfoEmbed = new discord.RichEmbed()
       .setTitle(seoa.user.username + '정보!')
       .setDescription(msg.author + '에게')
       .setThumbnail(seoa.user.avatarURL)
@@ -103,23 +102,36 @@ seoa.on('message', (msg) => {
       .addField('API 핑', SIM.round(seoa.ping), true)
     msg.channel.send(botInfoEmbed)
   } else {
-    let request = {
-      session: seoaDialogflow.sessionPath(settings.dialogflow, msg.author.id),
-      queryInput: {
-        text: {
-          text: msg.content.split(settings.prefix)[1],
-          languageCode: 'ko-KR'
-        }
-      }
+    const query = {
+      fullText: msg.content,
+      message: msg.content.split(settings.prefix)[1],
+      command: msg.content.split(settings.prefix)[1].split(' ')[0],
+      args: msg.content.split(settings.prefix)[1].split(' ').slice(1)
     }
 
-    seoaDialogflow.detectIntent(request).then((res) => {
-      if (res[0].queryResult.fulfillmentText.split(';')[0] === 'run') {
-        if (commands.get(res[0].queryResult.fulfillmentText.split(';')[1])) commands.get(res[0].queryResult.fulfillmentText.split(';')[1]).run(seoa, msg, settings)
-      } else if (res[0].queryResult.fulfillmentText.split(';')[0] === 'say') {
-        msg.channel.send(res[0].queryResult.fulfillmentText.split(';')[1])
-      }
-    })
+    const runCommand = commands.get(query.command)
+
+    if (!runCommand) {
+      runCommand.run(seoa, msg, settings, query)
+    }
   }
 })
-  /** @copyright (c) 2019. Seoa Bot Develoment Team. all rights reserved. */
+
+/** @copyright (c) 2019. Seoa Develoment Team. all rights reserved. */
+
+/**
+ * 으아아아악
+ * 으아아아아아아아악
+ * 심심해!
+ * 으아아아아아악
+ * 으아아아아아ㅏㅇ아ㅏㅇ아아ㅏㅇ
+ * 뭐하지 뭐하지
+ * 으아아아
+ * simsim
+ * tlatla
+ * i am simsim and you also
+ * 심시밋미심시밋ㅁ
+ * 으아아아 심심
+ * 뭐하지뭐하지뭐하지
+ * anjgkwlanjgkwl
+ */

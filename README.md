@@ -1,9 +1,15 @@
-# SeoaBot
+<div align="center">
+  <p>
+    <a href="https://discord.gg/KNBGZU2"><img src="https://cdn.discordapp.com/attachments/568032700213231666/589833031783809046/1_1.png" width="586" alt="SeoaBot"/></a>
+  </p>
+</div>
 
 [![GPL](https://img.shields.io/github/license/ttakkku/SeoaBot.svg)](https://github.com/ttakkku/SeoaBot/blob/master/LICENSE)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c9b69f9e4ba649cf8d17503ddbd1ff6c)](https://app.codacy.com/app/ttakkku/SeoaBot?utm_source=github.com&utm_medium=referral&utm_content=ttakkku/SeoaBot&utm_campaign=Badge_Grade_Dashboard)[![Build status](https://ci.appveyor.com/api/projects/status/oguh0cnta2kc74ex?svg=true)](https://ci.appveyor.com/project/ttakkku/seoabot)[![issues](https://img.shields.io/github/issues/ttakkku/SeoaBot.svg)](https://github.com/ttakkku/SeoaBot/issues)
-[![pr](https://img.shields.io/github/issues-pr/ttakkku/SeoaBot.svg)](https://github.com/ttakkku/SeoaBot/pulls)
-[![GitHub followers](https://img.shields.io/github/followers/ttakkku.svg?label=Flollow&style=social)](https://github.com/ttakkku)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c9b69f9e4ba649cf8d17503ddbd1ff6c)](https://app.codacy.com/app/ttakkku/SeoaBot?utm_source=github.com&utm_medium=referral&utm_content=ttakkku/SeoaBot&utm_campaign=Badge_Grade_Dashboard)
+[![Build status](https://ci.appveyor.com/api/projects/status/oguh0cnta2kc74ex?svg=true)](https://ci.appveyor.com/project/ttakkku/seoabot)
+[![issues](https://img.shields.io/github/issues/seoaApp/SeoaBot.svg)](https://github.com/ttakkku/SeoaBot/issues)
+[![pr](https://img.shields.io/github/issues-pr/seoaApp/SeoaBot.svg)](https://github.com/ttakkku/SeoaBot/pulls)
+[![GitHub followers](https://img.shields.io/github/followers/ttakkku.svg?label=Follow&style=social)](https://github.com/ttakkku)
 
 # Bot Invite
 [Seoa Invite](https://discordapp.com/oauth2/authorize?client_id=584692085614182440&permissions=8&scope=bot)
